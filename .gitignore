@@ -1,0 +1,4 @@
+example/.vagrant/
+example/Cheffile.lock
+example/cookbooks/
+example/tmp/

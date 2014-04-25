@@ -22,6 +22,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network :forwarded_port, guest: 3128, host: 3128
   config.vm.network :forwarded_port, guest: 80, host: 9080
 
+  config.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path = ["cookbooks"]
+    chef.data_bags_path = "data_bags"
+    chef.add_recipe "squid"
+    chef.json = {
+      squid:
+        { cache_size: "32" }
+    }
+  end
+
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
   # config.vm.network :private_network, ip: "192.168.33.10"
@@ -93,16 +103,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #   # You may also specify custom JSON attributes:
   #   chef.json = { :mysql_password => "foo" }
   # end
-
-  config.vm.provision :chef_solo do |chef|
-    chef.cookbooks_path = ["cookbooks"]
-    chef.data_bags_path = "data_bags"
-    chef.add_recipe "squid"
-    chef.json = {
-      squid:
-        { cache_size: "32" }
-    }
-  end
 
   # Enable provisioning with chef server, specifying the chef server URL,
   # and the path to the validation key (relative to this Vagrantfile).
