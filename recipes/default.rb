@@ -8,6 +8,7 @@
 #
 
 include_recipe 'squid'
+include_recipe 'iptables'
 
 package 'httpd' do
   action :install
@@ -18,8 +19,9 @@ service 'httpd' do
 end
 
 service 'iptables' do
-  action [:unable, :stop]
+  action [:start, :enable]
 end
+iptables_rule "proxy"
 
 file '/etc/hosts' do
   owner 'root'
